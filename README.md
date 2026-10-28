@@ -59,8 +59,8 @@ a linha `DMI: <fabricante> <produto>, BIOS <versão>` para você copiar.
 
 ## Instalar
 
-Requisitos: Debian/Ubuntu (usa `apt` para instalar `dkms`, headers do kernel
-e GTK4/libadwaita). Com Secure Boot ativo, a chave MOK do DKMS precisa estar
+Requisitos: Debian/Ubuntu (`apt`) ou Arch Linux e derivados (`pacman`); o
+script instala `dkms`, os headers do kernel em execução e GTK4/libadwaita. Com Secure Boot ativo, a chave MOK do DKMS precisa estar
 registrada.
 
 ```bash

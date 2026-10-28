@@ -8,7 +8,17 @@ VER=1.0.0
 SRC=/usr/src/avell-dchu-$VER
 
 echo ">> Dependências"
-apt-get install -y dkms "linux-headers-$(uname -r)" python3-gi gir1.2-adw-1 gir1.2-gtk-4.0 >/dev/null
+if command -v apt-get >/dev/null; then
+    apt-get install -y dkms "linux-headers-$(uname -r)" python3-gi gir1.2-adw-1 gir1.2-gtk-4.0 >/dev/null
+elif command -v pacman >/dev/null; then
+    # Headers do kernel em execução: linux -> linux-headers, linux-zen -> linux-zen-headers...
+    KPKG=$(pacman -Qqo "/usr/lib/modules/$(uname -r)/vmlinuz" 2>/dev/null || echo linux)
+    pacman -S --needed --noconfirm dkms "$KPKG-headers" python-gobject gtk4 libadwaita >/dev/null
+else
+    echo "Gerenciador de pacotes não suportado (use apt ou pacman)." >&2
+    echo "Instale manualmente: dkms, headers do kernel, PyGObject, GTK4 e libadwaita." >&2
+    exit 1
+fi
 
 echo ">> Driver (DKMS)"
 if dkms status -m avell-dchu -v "$VER" | grep -q .; then
